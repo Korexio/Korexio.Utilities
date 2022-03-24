@@ -2,6 +2,13 @@
 
     <PropertyGroup>
 
+        <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.1</VersionPrefix>
+        <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
+
+    </PropertyGroup>
+
+    <PropertyGroup>
+
         <ArtifactsPath>$([MSBuild]::NormalizeDirectory($(MSBuildThisFileDirectory), '..', 'Artifacts'))</ArtifactsPath>
 
         <BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory($(ArtifactsPath), $(MSBuildProjectName), 'obj'))</BaseIntermediateOutputPath>
