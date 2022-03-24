@@ -1,0 +1,39 @@
+<Project>
+
+  <PropertyGroup>
+
+    <ArtifactsPath>$([MSBuild]::NormalizeDirectory($(MSBuildThisFileDirectory), '..', 'Artifacts'))</ArtifactsPath>
+
+    <BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory($(ArtifactsPath), $(MSBuildProjectName), 'obj'))</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$([MSBuild]::NormalizeDirectory($(BaseIntermediateOutputPath), $(Configuration)))</IntermediateOutputPath>
+
+    <BaseOutputPath>$([MSBuild]::NormalizeDirectory($(ArtifactsPath), $(MSBuildProjectName), 'bin'))</BaseOutputPath>
+    <OutputPath>$([MSBuild]::NormalizeDirectory($(BaseOutputPath), $(Configuration)))</OutputPath>
+
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+
+    <AnalysisMode>All</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
