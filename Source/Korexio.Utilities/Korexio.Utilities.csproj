@@ -3,6 +3,11 @@
     <PropertyGroup>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>A NuGet package providing utility methods and classes.</Description>
+        <PackageProjectUrl>https://github.com/Korexio/Korexio.Utilities</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Korexio/Korexio.Utilities.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
 </Project>
