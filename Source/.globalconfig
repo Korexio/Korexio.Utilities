@@ -461,3 +461,6 @@ dotnet_diagnostic.S103.severity = warning
 
 # S100: Methods and properties should be named in PascalCase
 dotnet_diagnostic.S100.severity = warning
+
+# S3880: Finalizers should not be empty
+dotnet_diagnostic.S3880.severity = warning

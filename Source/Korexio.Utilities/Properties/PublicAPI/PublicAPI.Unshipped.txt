@@ -1,0 +1,2 @@
+Korexio.Utilities.StringExtensionMethods
+static Korexio.Utilities.StringExtensionMethods.ToLines(this string! value) -> string![]!
