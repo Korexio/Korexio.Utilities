@@ -1,0 +1,60 @@
+name: Build
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Setup .NET 6.0.x
+              uses: actions/setup-dotnet@v1
+              with:
+                  dotnet-version: 6.0.x
+
+            - name: dotnet restore
+              run: dotnet restore $Solution
+
+            - name: dotnet build
+              run: dotnet build $Solution --no-restore '-binaryLogger:LogFile=./Artifacts/msbuild.binlog'
+
+            - name: dotnet test
+              run: dotnet test $Solution --no-build --results-directory './Artifacts/TestResults/' --logger 'trx' --logger 'html' --collect "XPlat Code Coverage"
+
+            - name: ReportGenerator HtmlSummary
+              uses: danielpalme/ReportGenerator-GitHub-Action@5.1.3
+              with:
+                  reports: "./Artifacts/TestResults/*/coverage.cobertura.xml"
+                  targetdir: "./Artifacts/CodeCoverage/Summary"
+                  reporttypes: "HtmlSummary"
+
+            - name: ReportGenerator Html_Dark
+              uses: danielpalme/ReportGenerator-GitHub-Action@5.1.3
+              with:
+                  reports: "./Artifacts/TestResults/*/coverage.cobertura.xml"
+                  targetdir: "./Artifacts/CodeCoverage/Summary"
+                  reporttypes: "Html_Dark"
+
+            - name: Upload NuGet Packages
+              uses: actions/upload-artifact@v3
+              with:
+                  name: NuGet Packages
+                  path: |
+                      ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.nupkg
+                      ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.snupkg
+
+            - name: Upload Test Results
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Test Results
+                  path: |
+                      ./Artifacts/TestResults/*.trx
+                      ./Artifacts/TestResults/*.html
+                      ./Artifacts/CodeCoverage/**/*
+
+            - name: Upload Build Log
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Build Log
+                  path: ./Artifacts/msbuild.binlog
