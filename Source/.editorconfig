@@ -1,14 +1,3 @@
-root = true
-
-[*]
-
-indent_style: space
-indent_size: 4
-tab_width: 4
-charset: utf-8
-trim_trailing_whitespace: true
-insert_final_newline: true
-
 [*Tests.cs]
 
 # CA1707: Remove the underscores from type name Korexio.Utilities.Tests.StringExtensionMethods_ToLines_Tests
