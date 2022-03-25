@@ -2,6 +2,9 @@ name: Build
 
 on: [push]
 
+env:
+  Solution: ./Source/Korexio.Utilities.sln
+
 jobs:
     build:
         runs-on: ubuntu-latest
