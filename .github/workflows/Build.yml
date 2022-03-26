@@ -37,7 +37,7 @@ jobs:
               run: reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Summary" "-reporttypes:HtmlSummary"
 
             - name: reportgenerator Html_Dark
-              run: reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Summary" "-reporttypes:Html_Dark"
+              run: reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Full" "-reporttypes:Html_Dark"
 
             - name: Upload Build Log
               if: always()
@@ -64,6 +64,3 @@ jobs:
                       ./Artifacts/TestResults/*.trx
                       ./Artifacts/TestResults/*.html
                       ./Artifacts/TestResults/CodeCoverage/**/*
-                      
-            # - name: dotnet nuget push
-            #   run: dotnet nuget push ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.nupkg --api-key ${{secrets.NUGET}} --source https://api.nuget.org/v3/index.json
