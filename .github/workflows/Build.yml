@@ -6,10 +6,12 @@ env:
     Solution: ./Source/Korexio.Utilities.sln
 
 jobs:
-    build:
+
+    Build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - name: Checkout
+              uses: actions/checkout@v2
 
             - name: Setup .NET
               uses: actions/setup-dotnet@v1
@@ -19,12 +21,23 @@ jobs:
                       5.0.x
                       3.1.x
 
+            - name: Setup dotnet-reportgenerator-globaltool
+              run: dotnet tool update --global dotnet-reportgenerator-globaltool
+
             - name: dotnet restore
               run: dotnet restore $Solution
 
             - name: dotnet build
               run: dotnet build $Solution --no-restore '-binaryLogger:LogFile=./Artifacts/msbuild.binlog'
 
+            - name: dotnet test
+              run: dotnet test $Solution --no-build --results-directory './Artifacts/TestResults/' --logger 'trx' --logger 'html' --collect "XPlat Code Coverage"
+
+            - name: reportgenerator HtmlSummary
+              run: reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Summary" "-reporttypes:HtmlSummary"
+
+            - name: reportgenerator Html_Dark
+              run: reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Summary" "-reporttypes:Html_Dark"
 
             - name: Upload Build Log
               if: always()
@@ -42,23 +55,6 @@ jobs:
                       ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.nupkg
                       ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.snupkg
 
-            - name: dotnet test
-              run: dotnet test $Solution --no-build --results-directory './Artifacts/TestResults/' --logger 'trx' --logger 'html' --collect "XPlat Code Coverage"
-
-            - name: ReportGenerator HtmlSummary
-              uses: danielpalme/ReportGenerator-GitHub-Action@5.1.3
-              with:
-                  reports: "./Artifacts/TestResults/*/coverage.cobertura.xml"
-                  targetdir: "./Artifacts/CodeCoverage/Summary"
-                  reporttypes: "HtmlSummary"
-
-            - name: ReportGenerator Html_Dark
-              uses: danielpalme/ReportGenerator-GitHub-Action@5.1.3
-              with:
-                  reports: "./Artifacts/TestResults/*/coverage.cobertura.xml"
-                  targetdir: "./Artifacts/CodeCoverage/Full"
-                  reporttypes: "Html_Dark"
-
             - name: Upload Test Results
               if: always()
               uses: actions/upload-artifact@v3
@@ -67,7 +63,7 @@ jobs:
                   path: |
                       ./Artifacts/TestResults/*.trx
                       ./Artifacts/TestResults/*.html
-                      ./Artifacts/CodeCoverage/**/*
-
-            # - name: Publish NuGet Package
+                      ./Artifacts/TestResults/CodeCoverage/**/*
+                      
+            # - name: dotnet nuget push
             #   run: dotnet nuget push ./Artifacts/Korexio.Utilities/bin/Debug/Korexio.Utilities.*.nupkg --api-key ${{secrets.NUGET}} --source https://api.nuget.org/v3/index.json

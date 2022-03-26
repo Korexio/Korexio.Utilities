@@ -21,8 +21,8 @@ try {
 
     dotnet test $Solution --no-build --results-directory './Artifacts/TestResults/' --logger 'trx' --logger 'html' --collect "XPlat Code Coverage"
   
-    reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/CodeCoverage/Summary" "-reporttypes:HtmlSummary"
-    reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/CodeCoverage/Full" "-reporttypes:Html_Dark"
+    reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Summary" "-reporttypes:HtmlSummary"
+    reportgenerator "-reports:./Artifacts/TestResults/*/coverage.cobertura.xml" "-targetdir:./Artifacts/TestResults/CodeCoverage/Full" "-reporttypes:Html_Dark"
 
 }
 finally {
